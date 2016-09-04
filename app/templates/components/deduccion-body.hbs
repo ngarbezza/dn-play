@@ -1,0 +1,45 @@
+<h2>Deducción</h2>
+
+<p>Resultado esperado:
+  {{input value=deduccion.resultadoEsperado placeholder="Agregar una fórmula..."}}
+</p>
+
+<ol>
+  {{#each deduccion.pasos as |paso|}}
+    <li>{{paso.formula}} : {{paso.motivo}}</li>
+  {{/each}}
+</ol>
+
+{{input value=formula placeholder="Agregar una fórmula..."}}
+<select onchange={{action (mut motivo) value="target.value"}}>
+  <option value="premisa" selected="selected">Premisa</option>
+  <option value="supuesto">Supuesto</option>
+  <option value="regla">Regla</option>
+</select>
+<br>
+<select onchange={{action (mut nombreRegla) value="target.value"}}>
+  <option value="io" selected="selected">I v</option>
+  <option value="eo">E v</option>
+  <option value="iy">I ^</option>
+  <option value="ey">E ^</option>
+  <option value="ii">I -></option>
+  <option value="ei">E -></option>
+  <option value="in">I n</option>
+  <option value="en">E n</option>
+</select>
+<select onchange={{action (mut parametro1) value="target.value"}}>
+  <option value="1" selected="selected">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+</select>
+<select onchange={{action (mut parametro2) value="target.value"}}>
+  <option value="1" selected="selected">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+</select>
+<select onchange={{action (mut parametro3) value="target.value"}}>
+  <option value="1" selected="selected">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+</select>
+<button {{action 'agregarPaso'}}>Agregar paso</button>
