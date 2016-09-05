@@ -3,8 +3,27 @@ import { module, test } from 'qunit';
 
 module('Unit | Helper | formularizar');
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  let result = formularizar([42]);
-  assert.ok(result);
+test('reemplaza los not', function(assert) {
+  let result = formularizar("not q");
+  assert.strictEqual(result, "¬ q");
+});
+
+test('reemplaza los and', function(assert) {
+  let result = formularizar("p and q");
+  assert.strictEqual(result, "p ⋀ q");
+});
+
+test('reemplaza los or', function(assert) {
+  let result = formularizar("p or q");
+  assert.strictEqual(result, "p ⋁ q");
+});
+
+test('reemplaza los then', function(assert) {
+  let result = formularizar("p then q");
+  assert.strictEqual(result, "p → q");
+});
+
+test('reemplaza todas las ocurrencias de los operadores', function(assert) {
+  let result = formularizar("not q and (p or (q then not r))");
+  assert.strictEqual(result, "¬ q ⋀ (p ⋁ (q → ¬ r))");
 });
