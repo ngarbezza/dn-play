@@ -1,11 +1,17 @@
 <h2>Deducción</h2>
 
 <p>Resultado esperado:
-  {{input value=deduccion.resultadoEsperado placeholder="Agregar una fórmula..."}}
+  {{#if editandoResultado}}
+    {{input value=resultadoEsperado placeholder="Agregar una fórmula..."}}
+    <button {{action 'actualizarResultado'}}>Guardar</button>
+  {{else}}
+    <span>{{resultadoEsperado}}</span>
+    <button {{action 'editarResultado'}}>Editar</button>
+  {{/if}}
 </p>
 
 <ol>
-  {{#each deduccion.pasos as |paso|}}
+  {{#each pasos as |paso|}}
     <li>{{paso.formula}} : {{paso.motivo}}</li>
   {{/each}}
 </ol>
