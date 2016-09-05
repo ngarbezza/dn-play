@@ -32,21 +32,27 @@
       <option value={{regla.id}}>{{regla.nombre}}</option>
     {{/each}}
   </select>
-  <select onchange={{action (mut parametro1) value="target.value"}}>
-    {{#each (range 1 cantidadDePasos) as |opcion|}}
-      <option value={{opcion}}>{{opcion}}</option>
-    {{/each}}
-  </select>
-  <select onchange={{action (mut parametro2) value="target.value"}}>
-    {{#each (range 1 cantidadDePasos) as |opcion|}}
-      <option value={{opcion}}>{{opcion}}</option>
-    {{/each}}
-  </select>
-  <select onchange={{action (mut parametro3) value="target.value"}}>
-    {{#each (range 1 cantidadDePasos) as |opcion|}}
-      <option value={{opcion}}>{{opcion}}</option>
-    {{/each}}
-  </select>
+  {{#if (gt cantidadDeParametros 0)}}
+    <select onchange={{action (mut parametro1) value="target.value"}}>
+      {{#each (range 1 cantidadDePasos) as |opcion|}}
+        <option value={{opcion}}>{{opcion}}</option>
+      {{/each}}
+    </select>
+  {{/if}}
+  {{#if (gt cantidadDeParametros 1)}}
+    <select onchange={{action (mut parametro2) value="target.value"}}>
+      {{#each (range 1 cantidadDePasos) as |opcion|}}
+        <option value={{opcion}}>{{opcion}}</option>
+      {{/each}}
+    </select>
+  {{/if}}
+  {{#if (gt cantidadDeParametros 2)}}
+    <select onchange={{action (mut parametro3) value="target.value"}}>
+      {{#each (range 1 cantidadDePasos) as |opcion|}}
+        <option value={{opcion}}>{{opcion}}</option>
+      {{/each}}
+    </select>
+  {{/if}}
 {{/if}}
 
 <br>
