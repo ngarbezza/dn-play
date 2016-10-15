@@ -1,0 +1,44 @@
+Expression = head:Factor op:(_ BinaryOp _ Factor)* {
+  var node;
+  if (op[0]) {
+    var operator = op[0][1];
+    if (operator == "and" || operator == "⋀") { node = "conjunction"; }
+    if (operator == "or" || operator == "⋁") { node = "disjunction"; }
+    if (operator == "then" || operator == "→") { node = "implication"; }
+    return {
+      node: node,
+      left: head,
+      right: op[0][3]
+    }
+  } else {
+    return head;
+  }
+}
+
+Factor = ParenExpr / NegatedVariable / Variable
+
+ParenExpr = "(" _ expr:Expression _ ")" {
+  return expr;
+}
+
+NegatedVariable = NegationOp _ factor:Factor {
+  return {
+    node: 'negation',
+    factor: factor
+  }
+}
+
+Variable = [a-z]+ {
+  return {
+    node: 'variable',
+    value: text()
+  }
+}
+
+ConjunctionOp = "and" / "⋀"
+DisjunctionOp = "or" / "⋁"
+ImplicationOp = "then" / "→"
+NegationOp = "not" / "¬"
+BinaryOp = ConjunctionOp / DisjunctionOp / ImplicationOp
+
+_ = [ \t\n\r]*

@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import { formularizar } from 'dn-play/helpers/formularizar';
+import parser from 'dn-play/helpers/parser';
+const { parse } = parser;
 
 // TODO: mover todo esto a helpers/clases para poder testearlo
 const REGLAS = [
@@ -21,11 +23,17 @@ var reglaConNombre = function (id) {
 var imprimirRegla = function (id, parametro1, parametro2, parametro3) {
   var regla = reglaConNombre(id);
   var resultado = `${regla.nombre} `;
-  var parametros = reglaConNombre(id).parametros;
+  var parametros = regla.parametros;
   if (parametros > 0) { resultado += parametro1; }
   if (parametros > 1) { resultado += `, ${parametro2}`; }
   if (parametros > 2) { resultado += `, ${parametro3}`; }
   return resultado;
+};
+
+var validar = function (formula) {
+  var result = parse(formula);
+  console.log(result);
+  return { formula: formula };
 };
 
 export default Ember.Component.extend({
@@ -51,20 +59,26 @@ export default Ember.Component.extend({
       this.set('resultadoEsperado', formularizar(this.get('resultadoEsperado')));
     },
     agregarPaso() {
-      var motivo = this.get('motivo');
-      if (motivo === 'regla') {
-        motivo = imprimirRegla(
-          this.get('nombreRegla'),
-          this.get('parametro1'),
-          this.get('parametro2'),
-          this.get('parametro3')
-        );
+      var formula = this.get('formula');
+      var resultadoValidacion = validar(formula);
+      if (resultadoValidacion.error) {
+        this.set('errorEnFormula', resultadoValidacion.error);
+      } else {
+        var motivo = this.get('motivo');
+        if (motivo === 'regla') {
+          motivo = imprimirRegla(
+            this.get('nombreRegla'),
+            this.get('parametro1'),
+            this.get('parametro2'),
+            this.get('parametro3')
+          );
+        }
+        this.get('pasos').pushObject({
+          formula: formularizar(formula),
+          motivo: motivo
+        });
+        this.set('formula', '');
       }
-      this.get('pasos').pushObject({
-        formula: formularizar(this.get('formula')),
-        motivo: motivo
-      });
-      this.set('formula', '');
     }
   }
 });
